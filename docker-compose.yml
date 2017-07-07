@@ -1,0 +1,31 @@
+version: "3"
+
+volumes:
+    dbvolume:
+
+services:
+  web:
+    build: .
+    ports:
+      - "3000:3000"
+    links:
+      - db
+
+  db:
+    image: aashreys/mongo-auth:latest
+    environment:
+      - AUTH=yes
+      - MONGODB_ADMIN_USER=admin
+      - MONGODB_ADMIN_PASS=admin123
+      - MONGODB_APPLICATION_DATABASE=sample
+      - MONGODB_APPLICATION_USER=aashrey
+      - MONGODB_APPLICATION_PASS=admin123
+    ports:
+      - "27017:27017"
+    volumes:
+      - dbvolume:/data/db
+
+  dbstore:
+    image: tianon/true
+    volumes:
+      - dbvolume:/data/db
