@@ -25,7 +25,9 @@ module.exports = function(passport) {
                 if (err) return done(err);
 
                 if (user) {
-                    return done(null, false, req.flash('signupMessage', 'That email is already taken'));
+                    var signupMessage = 'That email is already taken';
+                    req.flash('signupMessage', signupMessage);
+                    return done(null, false, { message: signupMessage });
                 } else {
                     var newUser = new User();
                     newUser.local.email = email;
@@ -56,6 +58,6 @@ module.exports = function(passport) {
             }
             return done(null, user);
         })
-    }))
+    }));
 
 }
